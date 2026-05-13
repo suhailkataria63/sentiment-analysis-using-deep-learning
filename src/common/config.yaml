@@ -1,0 +1,39 @@
+project:
+  name: social_media_intelligence
+  version: 1.0
+
+paths:
+  raw_data:
+    sentiment: data/raw/sentiment140
+    fakenews: data/raw/fake_true
+  processed:
+    parquet: data/processed/parquet
+    predictions: data/processed/predictions
+  models:
+    sentiment: models/sentiment
+    fakenews: models/fakenews
+  reports:
+    figures: reports/figures
+    tables: reports/tables
+
+sentiment:
+  text_column: text
+  label_column: sentiment
+
+fakenews:
+  text_column: text
+  label_column: label
+
+split:
+  train: 0.7
+  validation: 0.15
+  test: 0.15
+
+training:
+  batch_size: 64
+  epochs: 10
+  max_vocab: 20000
+  max_seq_len: 200
+
+
+

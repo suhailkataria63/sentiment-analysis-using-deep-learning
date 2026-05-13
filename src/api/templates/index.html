@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Sentiment Predictor</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Arial; margin: 40px; max-width: 800px; }
+    textarea { width: 100%; height: 120px; font-size: 16px; padding: 12px; }
+    button { font-size: 16px; padding: 10px 16px; margin-top: 10px; cursor: pointer; }
+    .card { margin-top: 18px; padding: 14px; border: 1px solid #ddd; border-radius: 10px; }
+    .muted { color: #666; }
+    .row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .pill { display:inline-block; padding: 6px 10px; border-radius: 999px; background:#f3f3f3; }
+    code { background:#f7f7f7; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Sentiment Predictor (GRU)</h1>
+  <p class="muted">This page calls your FastAPI endpoint <code>/predict</code>.</p>
+
+  <textarea id="text" placeholder="Type text here...">I love this product</textarea>
+  <br />
+  <button onclick="doPredict()">Predict</button>
+
+  <div id="out" class="card" style="display:none;"></div>
+
+  <script>
+    async function doPredict() {
+      const text = document.getElementById("text").value;
+      const out = document.getElementById("out");
+      out.style.display = "block";
+      out.innerHTML = "Running...";
+
+      try {
+        const resp = await fetch("/predict", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({text})
+        });
+
+        const data = await resp.json();
+        if (!resp.ok) {
+          out.innerHTML = "<b>Error</b><br><pre>" + JSON.stringify(data, null, 2) + "</pre>";
+          return;
+        }
+
+        out.innerHTML = `
+          <div class="row">
+            <div class="pill"><b>Sentiment:</b> ${data.sentiment}</div>
+            <div class="pill"><b>Confidence:</b> ${data.confidence}</div>
+            <div class="pill"><b>P(positive):</b> ${Number(data.prob_positive).toFixed(4)}</div>
+            <div class="pill"><b>Label:</b> ${data.label}</div>
+          </div>
+          <p class="muted" style="margin-top:10px;"><b>Text:</b> ${data.text}</p>
+        `;
+      } catch (e) {
+        out.innerHTML = "<b>Request failed:</b> " + e;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+
+.Rhistory
+.RData
+.Rapp.history
+*.bak
+
+.vscode/
+.idea/
+
+# Spark/local sidecar files
+.*.crc
+
+# Logs and temporary outputs
+*.log
+tmp/
+temp/

@@ -1,0 +1,3 @@
+"sentiment_label","n","avg_text_len","median_text_len","max_text_len"
+"Negative",767023,66.2721339516546,62,170
+"Positive",756838,62.767859171976,58,195
